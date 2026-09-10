@@ -1,0 +1,28 @@
+{
+  "name": "暗流涌动",
+  "author": "The Pandemonium Institute",
+  "roles": [
+    {"id":"washerwoman","name":"洗衣妇","team":"townsfolk","ability":"开局时，你会得知两名玩家，其中一名是某个特定的镇民角色。"},
+    {"id":"librarian","name":"图书管理员","team":"townsfolk","ability":"开局时，你会得知两名玩家，其中一名是某个特定的外来者；如果本局没有外来者，你会得知这一点。"},
+    {"id":"investigator","name":"调查员","team":"townsfolk","ability":"开局时，你会得知两名玩家，其中一名是某个特定的爪牙。"},
+    {"id":"chef","name":"厨师","team":"townsfolk","ability":"开局时，你会得知有多少对邪恶玩家彼此相邻。"},
+    {"id":"empath","name":"共情者","team":"townsfolk","ability":"每晚，你会得知你两侧最近的存活邻座中，有多少名是邪恶玩家。"},
+    {"id":"fortuneteller","name":"占卜师","team":"townsfolk","ability":"每晚选择两名玩家，你会得知其中是否至少有一名是恶魔；但有一名善良玩家会一直被你当作恶魔。"},
+    {"id":"undertaker","name":"送葬者","team":"townsfolk","ability":"从第二夜起，每晚你会得知当天被处决玩家的角色。"},
+    {"id":"monk","name":"僧侣","team":"townsfolk","ability":"从第二夜起，每晚选择除自己外的一名玩家；当晚该玩家不会被恶魔的能力杀死。"},
+    {"id":"ravenkeeper","name":"守鸦人","team":"townsfolk","ability":"如果你在夜晚死亡，你会被唤醒并选择一名玩家，得知其角色。"},
+    {"id":"virgin","name":"贞洁者","team":"townsfolk","ability":"第一次有人提名你时，如果提名者是镇民，该提名者会立刻被处决。"},
+    {"id":"slayer","name":"猎手","team":"townsfolk","ability":"每局一次，白天公开选择一名玩家；如果对方是恶魔，对方死亡。"},
+    {"id":"soldier","name":"士兵","team":"townsfolk","ability":"你不会被恶魔的能力杀死。"},
+    {"id":"mayor","name":"市长","team":"townsfolk","ability":"如果只剩三名玩家存活且当天无人被处决，善良阵营获胜；夜晚你将死亡时，也可能改为另一名玩家死亡。"},
+    {"id":"butler","name":"管家","team":"outsider","ability":"每晚选择一名玩家作为主人；第二天投票时，只有主人也投票，你的票才可以举起。"},
+    {"id":"drunk","name":"酒鬼","team":"outsider","ability":"你不知道自己是酒鬼，并会以为自己是某个镇民；你实际没有那个镇民的正常能力。"},
+    {"id":"recluse","name":"隐士","team":"outsider","ability":"你可能会被角色能力当作邪恶、爪牙或恶魔，即使你已经死亡。"},
+    {"id":"saint","name":"圣徒","team":"outsider","ability":"如果你因为提名而被处决，善良阵营立刻落败。"},
+    {"id":"poisoner","name":"投毒者","team":"minion","ability":"每晚选择一名玩家；该玩家在当晚和次日处于中毒状态。"},
+    {"id":"spy","name":"间谍","team":"minion","ability":"每晚你可以查看说书人的魔典；你也可能被角色能力当作善良或镇民，即使已经死亡。"},
+    {"id":"scarletwoman","name":"猩红女郎","team":"minion","ability":"如果恶魔死亡时仍有至少五名玩家存活，你会变成新的恶魔。"},
+    {"id":"baron","name":"男爵","team":"minion","ability":"开局配置中会额外加入两名外来者。"},
+    {"id":"imp","name":"小恶魔","team":"demon","ability":"从第二夜起，每晚选择一名玩家死亡；如果你选择自己，通常会有一名爪牙变成新的小恶魔。"}
+  ]
+}
