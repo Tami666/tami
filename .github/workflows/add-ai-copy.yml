@@ -1,0 +1,101 @@
+name: Add AI copy button once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-ai-copy.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Patch index.html
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          if 'id="copyAiBtn"' in s:
+              print('AI copy button already present')
+              raise SystemExit(0)
+
+          s = s.replace(
+              '.privacy-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}.privacy-btn.hidden-on{background:#2e2b27;color:#fff;border-color:#2e2b27}',
+              '.privacy-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}.privacy-btn.hidden-on{background:#2e2b27;color:#fff;border-color:#2e2b27}.ai-copy-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}.ai-copy-btn.copied{background:#e6f0e7;border-color:#9fb6a1;color:#4f6b52}'
+          )
+          s = s.replace('.privacy-btn,.file-btn{font-size:10px;padding:6px 7px}', '.privacy-btn,.ai-copy-btn,.file-btn{font-size:10px;padding:6px 7px}')
+          s = s.replace(
+              '<div class="section-title"><span>身份板</span><div class="section-actions"><span class="hint">点号码切换阵营</span><button class="privacy-btn" id="hideRolesBtn" type="button">🙈 隐藏身份</button></div></div>',
+              '<div class="section-title"><span>身份板</span><div class="section-actions"><span class="hint">点号码切换阵营</span><button class="ai-copy-btn" id="copyAiBtn" type="button">✨ 复制给 AI</button><button class="privacy-btn" id="hideRolesBtn" type="button">🙈 隐藏身份</button></div></div>'
+          )
+
+          marker = 'function applyCount(n,useDefault){'
+          helper = r'''function teamLabelForAI(v){return v==='town'?'镇民':v==='outsider'?'外来者':v==='wolf'?'坏人':'未判断'}
+function judgeLabelForAI(v){return v==='suspect'?'怀疑':v==='confirm'?'确认':'未判断'}
+function buildAiPrompt(){
+  const lines=[];
+  lines.push('请帮我分析这局《血染钟楼》。请优先根据我记录的信息做逻辑梳理，不要把玩家自称身份默认当成真实身份。若信息不足，请明确指出，不要强行下结论。');
+  lines.push('');
+  if(state.script){
+    lines.push('剧本：'+(state.script.name||'已导入剧本')+(state.script.author?'（作者：'+state.script.author+'）':''));
+    const roleNames=(state.script.roles||[]).map(r=>r.name||r.id).filter(Boolean);
+    if(roleNames.length)lines.push('剧本角色：'+roleNames.join('、'));
+    const abilities=(state.script.roles||[]).filter(r=>r.ability).map(r=>(r.name||r.id)+'：'+r.ability);
+    if(abilities.length){lines.push('JSON 中提供的角色能力：');abilities.forEach(x=>lines.push('- '+x));}
+  }else lines.push('剧本：自由模式 / 未导入剧本');
+  lines.push('人数：'+state.playerCount+'人');
+  lines.push('配置假设：'+state.config.map(Number).join(' / ')+'（镇民 / 外来者 / 爪牙 / 恶魔）');
+  if(state.mySeat)lines.push('我的号码：'+state.mySeat+'号');
+  lines.push('');lines.push('玩家记录：');
+  for(let i=1;i<=state.playerCount;i++){
+    const role=(state.roles[i]||'').trim();
+    const team=teamLabelForAI(state.claimTeam[i]||'');
+    const judge=judgeLabelForAI(state.judgement[i]||'');
+    const alive=state.dead[i]?'死亡':'存活';
+    const mine=Number(state.mySeat)===i?'【我】':'';
+    lines.push(i+'号'+mine+'：身份/自称='+(role||'未记录')+'；阵营判断='+team+'；判断='+judge+'；状态='+alive);
+    noteListFor(i).forEach(n=>lines.push('  '+(n.pinned?'☑ 重要':'-')+' '+n.text));
+  }
+  const manual=(state.info||[]).filter(x=>x&&x.text);
+  if(manual.length){lines.push('');lines.push('额外关键信息 / 推理：');manual.forEach(x=>lines.push('- '+(x.seat?x.seat+'号：':'')+x.text));}
+  const timeline=(state.timeline||[]).filter(x=>x&&x.text);
+  if(timeline.length){lines.push('');lines.push('补充时间线：');timeline.forEach(x=>lines.push('- '+(x.phase||'')+' '+(x.seat?x.seat+'号：':'')+x.text));}
+  lines.push('');
+  lines.push('请重点分析：1）最关键的逻辑链和冲突；2）哪些人或身份最值得怀疑、确认或验证；3）哪些矛盾可能由中毒、醉酒、身份变化或配置异常解释；4）下一轮最值得找谁聊、具体问什么。请明确区分：已知事实 / 玩家自称 / 我的判断 / AI推测。');
+  return lines.join('\n');
+}
+async function copyTextRobust(text){
+  try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return true}}catch(e){}
+  try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);return ok}catch(e){return false}
+}
+function flashCopyButton(ok){const b=document.getElementById('copyAiBtn');if(!b)return;b.textContent=ok?'✓ 已复制':'复制失败';b.classList.toggle('copied',ok);setTimeout(()=>{b.textContent='✨ 复制给 AI';b.classList.remove('copied')},1400)}
+
+'''
+          if marker not in s:
+              raise SystemExit('Could not find applyCount marker')
+          s = s.replace(marker, helper + marker, 1)
+
+          old = "document.getElementById('hideRolesBtn').onclick=()=>{state.hideRoles=!state.hideRoles;save();renderAll()};"
+          if old not in s:
+              raise SystemExit('Could not find hideRoles handler')
+          s = s.replace(old, "document.getElementById('copyAiBtn').onclick=async()=>{const ok=await copyTextRobust(buildAiPrompt());flashCopyButton(ok)};\n" + old, 1)
+          p.write_text(s, encoding='utf-8')
+          print('Patched index.html')
+          PY
+      - name: Commit change
+        run: |
+          if git diff --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add copy-for-AI analysis button"
+          git push origin master
