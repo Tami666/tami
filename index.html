@@ -20,7 +20,7 @@ button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1120px;mar
 .ghost{border:1px solid var(--line);background:white;color:var(--ink);border-radius:10px;padding:8px 11px}.primary{border:0;border-radius:10px;background:var(--ink);color:white;padding:9px 13px;font-weight:700}
 .main-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:16px;margin-top:16px}.section{padding:16px}
 .section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:800;font-size:16px;margin-bottom:12px}.section-actions{display:flex;align-items:center;gap:8px}
-.privacy-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}.privacy-btn.hidden-on{background:#2e2b27;color:#fff;border-color:#2e2b27}
+.privacy-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}.privacy-btn.hidden-on{background:#2e2b27;color:#fff;border-color:#2e2b27}.ai-copy-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}.ai-copy-btn.copied{background:#e6f0e7;border-color:#9fb6a1;color:#4f6b52}
 .players{display:flex;flex-direction:column;gap:7px}.player{display:grid;grid-template-columns:36px minmax(72px,1fr) auto 28px auto;align-items:center;gap:6px;border:1px solid var(--soft);border-radius:11px;padding:6px 8px;background:#fff}
 .seat{width:32px;height:32px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:#68645f;font-weight:850;font-size:13px;user-select:none;padding:0;transition:.12s ease}
 .seat.town{background:#dcebd9;color:#35563b}.seat.outsider{background:#f3e3a5;color:#6d5a16}.seat.wolf{background:#ecc8c3;color:#7b342d}.seat.mine{outline:2px solid #171717;outline-offset:2px}
@@ -43,7 +43,7 @@ button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1120px;mar
 .timeline-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.phase{font-size:22px;font-weight:900;min-width:44px}.phase-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 10px}.timeline-list{max-height:420px;overflow:auto}.phase-group{margin-top:12px}.phase-group:first-child{margin-top:0}.phase-label{position:sticky;top:0;background:var(--paper);font-size:13px;font-weight:900;color:var(--muted);padding:5px 0}
 .empty{font-size:13px;color:var(--muted);padding:12px 2px}.footer{text-align:center;color:var(--muted);font-size:11px;padding:18px 4px 28px}
 .boot{position:fixed;inset:0;background:rgba(30,27,23,.36);backdrop-filter:blur(6px);display:grid;place-items:center;z-index:50;padding:20px}.boot.hidden{display:none}.boot-box{width:min(420px,100%);padding:22px}.boot-title{font-size:24px;font-weight:900;margin-bottom:5px}.boot-sub{color:var(--muted);font-size:13px;margin-bottom:18px}.boot-row{display:flex;gap:8px}.boot-row input{flex:1;min-width:0;padding:12px;border:1px solid var(--line);border-radius:11px;font-size:18px}.wide{padding:12px 16px}
-@media(max-width:800px){.app{padding:10px}.main-grid{grid-template-columns:1fr}.top{padding-top:4px}.title{font-size:15px}.section{padding:11px}.section-title .hint{display:none}.player{grid-template-columns:34px minmax(60px,1fr) auto 25px auto;gap:4px;padding:5px 6px}.seat{width:30px;height:30px}.role{font-size:13px}.state-tag{font-size:10px;padding:5px 5px;min-height:26px}.notes-toggle{font-size:10px}.privacy-btn,.file-btn{font-size:10px;padding:6px 7px}.script-head{padding:10px}.info-form,.timeline-form{grid-template-columns:72px minmax(0,1fr)}.info-form .primary,.timeline-form .primary{grid-column:2}.setup-summary{padding-left:13px;padding-right:13px}.setup-details{padding-left:13px;padding-right:13px}}
+@media(max-width:800px){.app{padding:10px}.main-grid{grid-template-columns:1fr}.top{padding-top:4px}.title{font-size:15px}.section{padding:11px}.section-title .hint{display:none}.player{grid-template-columns:34px minmax(60px,1fr) auto 25px auto;gap:4px;padding:5px 6px}.seat{width:30px;height:30px}.role{font-size:13px}.state-tag{font-size:10px;padding:5px 5px;min-height:26px}.notes-toggle{font-size:10px}.privacy-btn,.ai-copy-btn,.file-btn{font-size:10px;padding:6px 7px}.script-head{padding:10px}.info-form,.timeline-form{grid-template-columns:72px minmax(0,1fr)}.info-form .primary,.timeline-form .primary{grid-column:2}.setup-summary{padding-left:13px;padding-right:13px}.setup-details{padding-left:13px;padding-right:13px}}
 </style>
 </head>
 <body>
@@ -76,7 +76,7 @@ button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1120px;mar
   <div class="main-grid">
     <div>
       <section class="card section">
-        <div class="section-title"><span>身份板</span><div class="section-actions"><span class="hint">点号码切换阵营</span><button class="privacy-btn" id="hideRolesBtn" type="button">🙈 隐藏身份</button></div></div>
+        <div class="section-title"><span>身份板</span><div class="section-actions"><span class="hint">点号码切换阵营</span><button class="ai-copy-btn" id="copyAiBtn" type="button">✨ 复制给 AI</button><button class="privacy-btn" id="hideRolesBtn" type="button">🙈 隐藏身份</button></div></div>
         <div class="players" id="players"></div>
       </section>
 
@@ -272,6 +272,46 @@ function renderTimeline(){
   box.innerHTML=Object.keys(g).map(p=>'<div class="phase-group"><div class="phase-label">'+p+'</div><div class="list">'+g[p].map(x=>'<div class="item"><span class="tag">'+(x.seat?x.seat+'号':'全局')+'</span><div class="item-text">'+esc(x.text)+'</div><button class="del" type="button" data-del-time="'+x.idx+'">×</button></div>').join('')+'</div></div>').join('');
   box.querySelectorAll('[data-del-time]').forEach(b=>b.onclick=()=>{state.timeline.splice(Number(b.dataset.delTime),1);save();renderTimeline()});box.scrollTop=box.scrollHeight;
 }
+function teamLabelForAI(v){return v==='town'?'镇民':v==='outsider'?'外来者':v==='wolf'?'坏人':'未判断'}
+function judgeLabelForAI(v){return v==='suspect'?'怀疑':v==='confirm'?'确认':'未判断'}
+function buildAiPrompt(){
+  const lines=[];
+  lines.push('请帮我分析这局《血染钟楼》。请优先根据我记录的信息做逻辑梳理，不要把玩家自称身份默认当成真实身份。若信息不足，请明确指出，不要强行下结论。');
+  lines.push('');
+  if(state.script){
+    lines.push('剧本：'+(state.script.name||'已导入剧本')+(state.script.author?'（作者：'+state.script.author+'）':''));
+    const roleNames=(state.script.roles||[]).map(r=>r.name||r.id).filter(Boolean);
+    if(roleNames.length)lines.push('剧本角色：'+roleNames.join('、'));
+    const abilities=(state.script.roles||[]).filter(r=>r.ability).map(r=>(r.name||r.id)+'：'+r.ability);
+    if(abilities.length){lines.push('JSON 中提供的角色能力：');abilities.forEach(x=>lines.push('- '+x));}
+  }else lines.push('剧本：自由模式 / 未导入剧本');
+  lines.push('人数：'+state.playerCount+'人');
+  lines.push('配置假设：'+state.config.map(Number).join(' / ')+'（镇民 / 外来者 / 爪牙 / 恶魔）');
+  if(state.mySeat)lines.push('我的号码：'+state.mySeat+'号');
+  lines.push('');lines.push('玩家记录：');
+  for(let i=1;i<=state.playerCount;i++){
+    const role=(state.roles[i]||'').trim();
+    const team=teamLabelForAI(state.claimTeam[i]||'');
+    const judge=judgeLabelForAI(state.judgement[i]||'');
+    const alive=state.dead[i]?'死亡':'存活';
+    const mine=Number(state.mySeat)===i?'【我】':'';
+    lines.push(i+'号'+mine+'：身份/自称='+(role||'未记录')+'；阵营判断='+team+'；判断='+judge+'；状态='+alive);
+    noteListFor(i).forEach(n=>lines.push('  '+(n.pinned?'☑ 重要':'-')+' '+n.text));
+  }
+  const manual=(state.info||[]).filter(x=>x&&x.text);
+  if(manual.length){lines.push('');lines.push('额外关键信息 / 推理：');manual.forEach(x=>lines.push('- '+(x.seat?x.seat+'号：':'')+x.text));}
+  const timeline=(state.timeline||[]).filter(x=>x&&x.text);
+  if(timeline.length){lines.push('');lines.push('补充时间线：');timeline.forEach(x=>lines.push('- '+(x.phase||'')+' '+(x.seat?x.seat+'号：':'')+x.text));}
+  lines.push('');
+  lines.push('请重点分析：1）最关键的逻辑链和冲突；2）哪些人或身份最值得怀疑、确认或验证；3）哪些矛盾可能由中毒、醉酒、身份变化或配置异常解释；4）下一轮最值得找谁聊、具体问什么。请明确区分：已知事实 / 玩家自称 / 我的判断 / AI推测。');
+  return lines.join('\n');
+}
+async function copyTextRobust(text){
+  try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return true}}catch(e){}
+  try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);return ok}catch(e){return false}
+}
+function flashCopyButton(ok){const b=document.getElementById('copyAiBtn');if(!b)return;b.textContent=ok?'✓ 已复制':'复制失败';b.classList.toggle('copied',ok);setTimeout(()=>{b.textContent='✨ 复制给 AI';b.classList.remove('copied')},1400)}
+
 function applyCount(n,useDefault){
   n=Math.max(1,Math.min(30,Number(n)||1));state.playerCount=n;[state.roles,state.dead,state.claimTeam,state.judgement,state.notes,state.notesCollapsed].forEach(o=>Object.keys(o).forEach(k=>{if(Number(k)>n)delete o[k]}));
   if(state.mySeat>n)state.mySeat=0;if(state.lastRoleSeat>n)state.lastRoleSeat=0;if(useDefault)state.config=defaultConfig(n);save();renderAll();
@@ -284,6 +324,7 @@ document.getElementById('applyCount').onclick=()=>applyCount(document.getElement
 document.getElementById('mySeat').oninput=e=>{const raw=e.target.value.trim();state.mySeat=raw?Math.max(1,Math.min(state.playerCount,Number(raw)||0)):0;save();renderSetup();renderPlayers()};
 document.getElementById('standardCfg').onclick=()=>{state.config=defaultConfig(state.playerCount);save();renderAll()};
 ['townsfolk','outsiders','minions','demons'].forEach((id,i)=>document.getElementById(id).oninput=e=>{state.config[i]=Math.max(0,Number(e.target.value)||0);save();renderAll()});
+document.getElementById('copyAiBtn').onclick=async()=>{const ok=await copyTextRobust(buildAiPrompt());flashCopyButton(ok)};
 document.getElementById('hideRolesBtn').onclick=()=>{state.hideRoles=!state.hideRoles;save();renderAll()};
 function syncHideButton(){const b=document.getElementById('hideRolesBtn');b.textContent=state.hideRoles?'👁 显示身份':'🙈 隐藏身份';b.classList.toggle('hidden-on',state.hideRoles)}
 const oldRenderAll=renderAll;renderAll=function(){oldRenderAll();syncHideButton()};syncHideButton();
