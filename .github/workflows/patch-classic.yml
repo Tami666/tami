@@ -3,6 +3,7 @@ name: Patch classic script selector once
 on:
   push:
     paths:
+      - '.github/workflows/patch-classic.yml'
       - 'tools/patch_classic.py'
 
 permissions:
